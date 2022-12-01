@@ -4,7 +4,10 @@
 	"description": "Advent of Code 2022",
 	"main": "index.js",
 	"scripts": {
-		"start": "ts-node 1/b.ts"
+		"1a": "ts-node 1/a.ts",
+		"1b": "ts-node 1/b.ts",
+		"2a": "ts-node 2/a.ts",
+		"2b": "ts-node 2/b.ts"
 	},
 	"author": "Matt Dunbar",
 	"license": "ISC",
