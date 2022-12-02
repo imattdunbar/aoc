@@ -7,7 +7,9 @@
 		"1a": "ts-node 1/a.ts",
 		"1b": "ts-node 1/b.ts",
 		"2a": "ts-node 2/a.ts",
-		"2b": "ts-node 2/b.ts"
+		"2b": "ts-node 2/b.ts",
+		"3a": "ts-node 3/a.ts",
+		"3b": "ts-node 3/b.ts"
 	},
 	"author": "Matt Dunbar",
 	"license": "ISC",
