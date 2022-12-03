@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const input = fs.readFileSync('2/input.txt', 'utf-8');
+const input = fs.readFileSync('2022/2/input.txt', 'utf-8');
 
 const split = input.split('\n');
 
