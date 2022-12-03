@@ -1,6 +1,7 @@
 import fs from 'fs';
+import path from 'path';
 
-const input = fs.readFileSync('2021/1/input.txt', 'utf-8');
+const input = fs.readFileSync(path.join(__dirname, '/input.txt'), 'utf-8');
 
 const measurements: string[] = input.split('\n');
 
