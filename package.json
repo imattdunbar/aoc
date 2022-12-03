@@ -2,16 +2,8 @@
 	"name": "aoc-2022",
 	"version": "1.0.0",
 	"description": "Advent of Code 2022",
-	"main": "index.js",
 	"scripts": {
-		"1a": "ts-node 1/a.ts",
-		"1b": "ts-node 1/b.ts",
-		"2a": "ts-node 2/a.ts",
-		"2b": "ts-node 2/b.ts",
-		"3a": "ts-node 3/a.ts",
-		"3b": "ts-node 3/b.ts",
-		"4a": "ts-node 4/a.ts",
-		"4b": "ts-node 4/b.ts"
+		"start": "ts-node index.ts"
 	},
 	"author": "Matt Dunbar",
 	"license": "ISC",
