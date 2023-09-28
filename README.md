@@ -6,4 +6,8 @@ I learned about Advent of Code in 2022, but eventually I will try and go back th
 
 It's as simple as running `npm start`, but in `index.ts` you will have to change the `tsFile` to the correct problem you are trying to run the solution for.
 
+# Update for 2023
+
+I'm using Bun now because I'm super cool.
+
 Happy Holidays!
