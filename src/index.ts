@@ -15,6 +15,9 @@ const command = `bun run ${tsFile}`;
 if (fs.existsSync(tsFile)) {
 	exec(command, (error, stdout, stderr) => {
 		console.log(stdout);
+		if (stderr !== '' && error) {
+			console.log(stderr);
+		}
 	});
 } else {
 	console.log('Invalid problem or arguments.');
