@@ -21,11 +21,14 @@ try {
 		fs.mkdirSync(questionDir);
 	}
 
-	const code = `const input = await Bun.file(import.meta.path.replace(import.meta.file, 'input.txt')).text();`;
+	const code = `const input = await Bun.file(import.meta.dir + '/input.txt').text();`;
 
 	fs.writeFileSync(fileA, code);
 	fs.writeFileSync(fileB, code);
-	fs.writeFileSync(fileInput, '');
+
+	if (!fs.existsSync(fileInput)) {
+		fs.writeFileSync(fileInput, '');
+	}
 } catch (e) {
 	console.log(e);
 }
