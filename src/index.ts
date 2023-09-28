@@ -9,7 +9,7 @@ const year = args.year;
 const question = args.question;
 const part = args.part;
 
-const tsFile = `${year}/${question}/${part}.ts`;
+const tsFile = `src/${year}/${question}/${part}.ts`;
 const command = `bun run ${tsFile}`;
 
 if (fs.existsSync(tsFile)) {
