@@ -1,21 +1,22 @@
 {
-	"name": "aoc",
-	"version": "1.0.0",
-	"description": "Advent of Code",
-	"module": "index.ts",
-	"type": "module",
-	"scripts": {
-		"start": "bun run src/index.ts",
-		"gen": "bun run src/util/generate.ts"
-	},
-	"devDependencies": {
-		"@types/minimist": "^1.2.3",
-		"bun-types": "latest"
-	},
-	"peerDependencies": {
-		"typescript": "^5.0.0"
-	},
-	"dependencies": {
-		"minimist": "^1.2.8"
-	}
+  "name": "aoc",
+  "version": "1.0.0",
+  "description": "Advent of Code",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "gen": "bun run src/util/generate.ts"
+  },
+  "devDependencies": {
+    "@types/minimist": "^1.2.3",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "minimist": "^1.2.8",
+    "zod": "^3.22.4"
+  }
 }

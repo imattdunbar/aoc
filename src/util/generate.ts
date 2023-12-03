@@ -1,19 +1,20 @@
 import minimist from 'minimist';
 import fs from 'fs';
+import { z } from 'zod';
 
 const argv = process.argv.slice(2);
 const args = minimist(argv);
 
-const year = args.year;
-const question = args.question;
-
-const yearDir = `src/${year}`;
-const questionDir = `${yearDir}/${question}`;
-const fileA = `${questionDir}/a.ts`;
-const fileB = `${questionDir}/b.ts`;
-const fileInput = `${questionDir}/input.txt`;
-
 try {
+	const year = z.number().parse(args.year);
+	const question = z.number().parse(args.question);
+
+	const yearDir = `src/${year}`;
+	const questionDir = `${yearDir}/${question}`;
+	const fileA = `${questionDir}/a.ts`;
+	const fileB = `${questionDir}/b.ts`;
+	const fileInput = `${questionDir}/input.txt`;
+
 	if (!fs.existsSync(yearDir)) {
 		fs.mkdirSync(yearDir);
 	}
@@ -31,4 +32,5 @@ try {
 	}
 } catch (e) {
 	console.log(e);
+	console.log(`Format for command is "gen --year 2023 --question 1"`);
 }
