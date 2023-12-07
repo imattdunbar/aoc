@@ -1,124 +1,128 @@
-import { z } from 'zod';
-
 const input = await Bun.file(import.meta.dir + '/input.txt').text();
 
 const lines = input.split('\n');
 const board = lines.map((line) => line.split(''));
 
-console.log(`I hate this problem, skipping for now`);
+type LineNumber = {
+	value: number;
+	indices: number[];
+	neighbors: string[];
+	isPart: boolean;
+};
 
-// function getBoardCoord(x: number, y: number): string | undefined {
-// 	try {
-// 		return board[y][x];
-// 	} catch (e) {
-// 		// Doesn't exist
-// 		return undefined;
-// 	}
-// }
+function get(x: number, y: number) {
+	try {
+		return board[y][x];
+	} catch {
+		return undefined;
+	}
+}
 
-// function removeSymbols(line: string): string {
-// 	let result = line;
-// 	result = result.replaceAll('%', '.');
-// 	result = result.replaceAll('@', '.');
-// 	result = result.replaceAll('*', '.');
-// 	result = result.replaceAll('$', '.');
-// 	result = result.replaceAll('/', '.');
-// 	result = result.replaceAll('=', '.');
-// 	result = result.replaceAll('+', '.');
-// 	result = result.replaceAll('-', '.');
-// 	result = result.replaceAll('#', '.');
-// 	return result;
-// }
+function getNeighbors(x: number, y: number) {
+	return [
+		get(x, y - 1), // up
+		get(x, y + 1), // down
+		get(x - 1, y), // left
+		get(x + 1, y), // right
+		get(x - 1, y - 1), // upLeft
+		get(x + 1, y - 1), // upRight
+		get(x - 1, y + 1), // downLeft
+		get(x + 1, y + 1), // downRight
+	];
+}
 
-// function coordTouchesSymbol(x: number, y: number): boolean {
-// 	const up = getBoardCoord(x, y - 1);
-// 	const down = getBoardCoord(x, y + 1);
-// 	const left = getBoardCoord(x - 1, y);
-// 	const right = getBoardCoord(x + 1, y);
-// 	const upLeft = getBoardCoord(x - 1, y - 1);
-// 	const upRight = getBoardCoord(x + 1, y - 1);
-// 	const downLeft = getBoardCoord(x - 1, y + 1);
-// 	const downRight = getBoardCoord(x + 1, y + 1);
+function isPeriod(char: string): boolean {
+	return char.charCodeAt(0) === 46;
+}
 
-// 	const all = [up, down, left, right, upLeft, upRight, downLeft, downRight];
+function isSymbol(char: string): boolean {
+	const periodOrNumCodes = [46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
+	return !periodOrNumCodes.includes(char.charCodeAt(0));
+}
 
-// 	const symbols = all.filter((neighbor) => {
-// 		if (neighbor) {
-// 			const notPeriod = neighbor !== '.';
-// 			const notNumber = Number.isNaN(parseInt(neighbor));
+let allLineNumbers: LineNumber[] = [];
 
-// 			return notPeriod && notNumber;
-// 		} else {
-// 			return false;
-// 		}
-// 	});
+lines.forEach((line, boardY) => {
+	// console.log(line)
+	const lineNoSymbols = line
+		.split('')
+		.map((char) => {
+			if (isSymbol(char)) {
+				return '.';
+			} else {
+				return char;
+			}
+		})
+		.join('');
 
-// 	console.log(
-// 		`VAL: ${getBoardCoord(x, y)} ALL: ${all} | SYMBOLS: ${symbols}`
-// 	);
+	const lineNumbers: LineNumber[] = [];
 
-// 	const touches = symbols.length > 0;
+	lineNoSymbols
+		.split('.')
+		.filter((str) => str !== '')
+		.forEach((str) => {
+			let ln: LineNumber = {
+				value: parseInt(str),
+				indices: [],
+				neighbors: [],
+				isPart: false,
+			};
 
-// 	return touches;
-// }
+			// console.log(line);
+			let index = -1;
 
-// let total = 0;
+			const existing = lineNumbers.find((ex) => ex.value === ln.value);
+			if (existing) {
+				const lastIndexEx =
+					existing.indices[existing.indices.length - 1];
+				index = line.indexOf(str, lastIndexEx);
+				// console.log(
+				// 	`existing num ${
+				// 		existing.value
+				// 	} on Y ${boardY} so starting at ${
+				// 		existing.indices[existing.indices.length - 1]
+				// 	} which is char ${
+				// 		line[existing.indices[existing.indices.length - 1]]
+				// 	}`
+				// );
+			} else {
+				index = line.indexOf(str);
+			}
 
-// lines.forEach((line, boardY) => {
-// 	// if (boardY !== 74) {
-// 	// 	return;
-// 	// }
+			for (let i = index; i < index + str.length; i++) {
+				ln.indices.push(i);
 
-// 	const lineNS = removeSymbols(line);
-// 	console.log(line);
-// 	console.log(lineNS);
-// 	const numsForLine = lineNS
-// 		.split('.')
-// 		.map((x) =>
-// 			x
-// 				.split('')
-// 				.filter((y) => z.coerce.number().safeParse(y).success)
-// 				.join('')
-// 		)
-// 		.filter((x) => {
-// 			return x !== '';
-// 		})
-// 		.map((x) => parseInt(x));
+				// @ts-ignore
+				const neighbors: string[] = getNeighbors(i, boardY).filter(
+					(s) => s !== undefined
+				);
+				ln.neighbors = ln.neighbors.concat(neighbors);
+			}
 
-// 	console.log(`${boardY}: ${numsForLine}`);
+			// console.log(`${ln.value} ${ln.indices.length}`);
 
-// 	console.log();
-// 	console.log(
-// 		`Doing board Y ${boardY} - ${numsForLine.length} numbers in line`
-// 	);
+			const symbols = ln.neighbors.filter((s) => isSymbol(s));
+			ln.isPart = symbols.length > 0;
 
-// 	let touches = 0;
+			lineNumbers.push(ln);
 
-// 	numsForLine.forEach((num) => {
-// 		console.log('doing num', num);
-// 		const numStr = `${num}`;
-// 		const startX = line.indexOf(numStr);
-// 		const endX = startX + (numStr.length - 1);
-// 		// console.log(`index of ${num}: ${startX} to ${endX}`);
+			// if (existing) {
+			// 	console.log(lineNumbers);
+			// }
+		});
 
-// 		let numDoesTouch = false;
-// 		for (let i = startX; i < endX + 1; i++) {
-// 			if (coordTouchesSymbol(i, boardY)) {
-// 				numDoesTouch = true;
-// 			}
-// 		}
+	allLineNumbers = allLineNumbers.concat(lineNumbers);
+});
 
-// 		if (numDoesTouch) {
-// 			console.log(`num touches: ${num}`);
-// 			touches += 1;
-// 			total += num;
-// 		}
-// 	});
+const total = allLineNumbers.reduce((acc, ln) => {
+	if (ln.isPart) {
+		return acc + ln.value;
+	} else {
+		return acc;
+	}
+}, 0);
 
-// 	console.log(`Board Y ${boardY} touches - ${touches}`);
-// 	console.log();
+console.log(`Total: ${total}`);
 
-// 	// console.log(`Nums for line ${boardY}: ${numsForLine}`);
-// });
-
-// console.log(`Total: ${total}`);
+// Part A - 546312
+// Part B - 87449461

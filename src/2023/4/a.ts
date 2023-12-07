@@ -7,7 +7,6 @@ type Card = {
 };
 
 const cards = input.split('\n').map((line, index) => {
-	const cardNum = index + 1;
 	const card = line.split(': ')[1].split(' | ');
 
 	const winning = card[0].trim();
